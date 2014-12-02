@@ -12,7 +12,7 @@ class packer(
   multi_validate_re($version, $architecture, $::kernel, $::architecture, '^.+$')
   validate_absolute_path($install_dir)
   validate_re($base_url, '^(http|https|ftp)\:\/\/.+$')
-  validate_re("${timeout}", '^\d+$')
+  validate_re($timeout, '^\d+$')
   if 'Windows' != $::kernel { multi_validate_re($owner, $group, '^.+$') }
 
   $package_name = downcase("packer_${version}_${::kernel}_${architecture}.zip")
@@ -20,7 +20,7 @@ class packer(
 
   if !defined(Class[::staging]) {
     class { '::staging':
-      path => $staging_dir,
+      path  => $staging_dir,
       owner => 'puppet',
       group => 'puppet', }
   }
@@ -28,19 +28,19 @@ class packer(
   $install_path = dirtree($install_dir)
   file { $install_path:
     ensure => directory,
-    owner => $owner,
-    group => $group,
-    mode => '0644',
+    owner  => $owner,
+    group  => $group,
+    mode   => '0644',
   }
 
   include ::staging
   notice($package_name)
   ::staging::file { $package_name: source => $full_url, } ->
   ::staging::extract { $package_name:
-    target => $install_dir,
+    target  => $install_dir,
     creates => $::kernel ? {
       'Windows' => "${install_dir}/packer.exe",
-      default => "${install_dir}/packer",
+      default   => "${install_dir}/packer",
     },
     require => File[$install_path],
   }
