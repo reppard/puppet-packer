@@ -1,0 +1,5 @@
+*.swp
+~
+;
+.bundle
+Gemfile.lock
