@@ -15,7 +15,7 @@ class packer(
   validate_re("${timeout}", '^\d+$')
   if 'Windows' != $::kernel { multi_validate_re($owner, $group, '^.+$') }
 
-  $package_name = downcase("${version}_${::kernel}_${architecture}.zip")
+  $package_name = downcase("packer_${version}_${::kernel}_${architecture}.zip")
   $full_url = "${base_url}/${package_name}"
 
   if !defined(Class[::staging]) {
@@ -34,6 +34,7 @@ class packer(
   }
 
   include ::staging
+  notice($package_name)
   ::staging::file { $package_name: source => $full_url, } ->
   ::staging::extract { $package_name:
     target => $install_dir,

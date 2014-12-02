@@ -4,19 +4,19 @@ class packer::params {
       $owner = 'root'
       $group = 'root'
       $staging_dir = '/tmp'
-      $install_dir = '/opt/hashicorp'
-      $symlink = '/usr/loca/bin/packer'
+      $install_dir = '/opt/hashicorp/bin'
+      $symlink = '/usr/local/bin/packer'
     }
     'Windows': {
       $staging_dir = 'C:/WINDOWS/Temp'
-      $install_dir = 'C:/HashiCorp'
+      $install_dir = 'C:/HashiCorp/bin'
       $symlink = 'C:/Windows/System32/packer'
     }
     default: {fail("OS family ${::osfamily} not supported by this module!")}
   }
 
   case $::architecture {
-    'amd4', 'x64', 'x86_64': { $architecture = 'adm64' }
+    'amd4', 'x64', 'x86_64': { $architecture = 'amd64' }
     default: { $architecture = '386' }
   }
   
